@@ -1,33 +1,33 @@
 .score-display {
     position: relative;
-    top: 10px;
-    font-size: 24px;
+    top: 5px;
+    font-size: 20px; /* フォントサイズを少し小さく */
     font-weight: bold;
     color: #333;
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 10px;
+    padding: 5px; /* 高さを抑える */
     border-radius: 5px;
     z-index: 0;
     display: inline-block; /* スコアと操作回数を横並びにする */
-    width: 150px; /* 4桁分の幅を確保 */
+    width: 120px; /* 4桁分の幅を確保 */
     text-align: left; /* 数字を右揃え */
 }
 
 .operation-count {
     position: relative;
-    top: 10px;
+    top: 5px;
     left: 10px; /* スコアの右に配置 */
-    font-size: 18px;
+    font-size: 16px; /* フォントサイズを少し小さく */
     font-weight: normal;
     color: #555;
     background-color: rgba(255, 255, 255, 0.8);
-    padding: 8px;
+    padding: 5px; /* 高さを抑える */
     border-radius: 5px;
     z-index: 0;
     display: inline-block; /* 横並びにする */
     margin-left: 0px; /* スコアとの間隔を調整 */
-    margin-right: 80px; /* リセットボタンとの間隔をさらに広げる */
-    width: 140px; /* 4桁分の幅を確保 */
+    margin-right: 30px; /* リセットボタンとの間隔をさらに広げる */
+    width: 100px; /* 4桁分の幅を確保 */
     text-align: left; /* 数字を右揃え */
 }
 
@@ -36,7 +36,7 @@
     grid-template-columns: repeat(20, 25px); /* 20マスに変更 */
     grid-template-rows: repeat(20, 25px); /* 20マスに変更 */
     gap: 2px;
-    margin: 20px 50px;
+    margin: 10px 20px;
   }
   
   .grid-cell {
@@ -148,9 +148,9 @@
 }
 
 .reset-button {
-    margin: 20px 0 0 0; /* 上: 20pxに配置 */
-    padding: 10px 20px;
-    font-size: 16px;
+    margin: 10px 0 0 0; /* 上: 20pxに配置 */
+    padding: 5px 15px; /* 高さを抑える */
+    font-size: 14px; /* フォントサイズを少し小さく */
     font-weight: bold;
     color: white;
     background-color: #007bff;
@@ -168,12 +168,12 @@
 }
 
 .cpu-button {
-  margin: 20px 0 0 0; /* 上: 20pxに配置 */
-  padding: 10px 20px;
+  margin: 10px 0 0 100px; /* 上: 20pxに配置 */
+  padding: 7px 15px; /* 高さを抑える */
   background-color: #90ee90; /* 黄緑色 */
   border: none;
   margin-right: 10px;
-  font-size: 16px;
+  font-size: 14px; /* フォントサイズを少し小さく */
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: inline-block; /* 横並びにする */

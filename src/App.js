@@ -6,11 +6,133 @@ import seedrandom from 'seedrandom';
 import oniImage from './img/oni.png';
 import fukuImage from './img/fuku.png';
 
+// in/0000.txt の内容を埋め込み
+const initialGridData = `
+20
+........x.x......o..
+.............o.x.o..
+o.o.ox...x........o.
+......x.x.......x...
+x..x....x...........
+..x...x...o....o....
+.x...xo....ox.......
+......o..x......o.o.
+xx....o........o....
+o...........o......x
+ox.xoo.x...o.......o
+.oo..x..xo.....x..ox
+...x......x.........
+.o......x........o..
+.x...xx.....o.o.....
+...........x.o.....x
+...o....o.oox.o..ox.
+................x...
+..........o.....o..x
+...............x....
+`;
+
+// out/0000.txt の内容を埋め込み
+const cpuMovesData = `
+U 9
+L 14
+L 6
+U 8
+L 14
+U 8
+U 8
+U 8
+U 8
+U 8
+U 8
+L 4
+U 6
+L 6
+U 6
+U 7
+U 7
+L 8
+L 4
+U 6
+L 14
+U 6
+L 14
+U 6
+L 14
+U 6
+L 4
+U 5
+L 14
+U 5
+R 11
+U 5
+L 8
+R 15
+D 12
+D 12
+D 12
+D 12
+U 3
+L 5
+L 5
+U 10
+L 5
+U 9
+U 9
+U 3
+L 8
+L 8
+L 8
+L 8
+U 0
+L 10
+L 10
+L 3
+U 15
+R 18
+U 15
+D 16
+D 16
+R 2
+U 8
+U 8
+D 10
+U 8
+D 16
+D 10
+D 12
+U 15
+U 5
+U 6
+U 8
+L 13
+D 9
+D 9
+L 7
+D 9
+D 9
+D 9
+U 15
+R 16
+L 10
+U 5
+R 14
+R 14
+R 14
+R 14
+R 16
+L 4
+D 9
+R 9
+D 9
+L 10
+`;
+
 function App() {
   const gridSize = 20;
   const [grid, setGrid] = useState(
     Array.from({ length: gridSize }, () => Array(gridSize).fill(null))
   );
+  const [initGrid, setInitGrid] = useState(null); // 初期状態を保持
   const [selectedCell, setSelectedCell] = useState(null);
   const [moveCount, setMoveCount] = useState(0); // 矢印ボタンのクリック回数を管理
   const [isScoreScreen, setIsScoreScreen] = useState(null); // 初期値をnullに設定
@@ -18,12 +140,9 @@ function App() {
   const [highlightedRow, setHighlightedRow] = useState(null); // スライド中の行を管理
   const [highlightedCol, setHighlightedCol] = useState(null); // スライド中の列を管理
 
-  // 0000.txtを読み込んで初期状態を設定
-  const loadInitialGrid = async () => {
-    const filePath = '/in/0000.txt'; // パブリックフォルダ内のパス
-    const response = await fetch(filePath);
-    const fileContent = await response.text();
-    const lines = fileContent.trim().split('\n');
+  // 初期状態を設定
+  const loadInitialGrid = () => {
+    const lines = initialGridData.trim().split('\n');
     const newGrid = Array.from({ length: gridSize }, () => Array(gridSize).fill(null));
 
     lines.slice(1).forEach((line, row) => {
@@ -34,41 +153,39 @@ function App() {
     });
 
     setGrid(newGrid);
+    setInitGrid(newGrid); // 初期状態を保持
   };
 
   useEffect(() => {
-    loadInitialGrid().then(() => {
-      setIsScoreScreen(false); // 初期状態の読み込み後にスコア画面を非表示
-    });
+    loadInitialGrid();
+    setIsScoreScreen(false); // 初期状態の読み込み後にスコア画面を非表示
   }, []);
 
-  const handleReset = async () => {
+  const handleReset = () => {
+    if (initGrid) {
+      setGrid([...initGrid]); // 初期状態を使用してリセット
+    }
     setMoveCount(0); // 操作回数をリセット
     setSelectedCell(null); // 選択状態をリセット
     setIsScoreScreen(false); // スコア画面を非表示
-    await loadInitialGrid(); // 初期状態を再読み込み
   };
 
   const handleCPUClick = async () => {
     if (isCPURunning) return; // 実行中なら何もしない
     setIsCPURunning(true); // 実行中フラグを設定
 
-    await handleReset(); // リセットボタンを自動で押し、完了を待機
-    await new Promise((resolve) => setTimeout(resolve, 500)); // 状態更新を待機
+    handleReset(); // リセット処理を呼び出す
 
-    const filePath = '/out/0000.txt'; // out/0000.txtのパス
-    const response = await fetch(filePath);
-    const fileContent = await response.text();
-    const lines = fileContent.trim().split('\n');
+    const lines = cpuMovesData.trim().split('\n');
 
-    // リセット後の盤面を取得
-    const currentGrid = [...grid];
+    // initGrid のディープコピーを作成して currentGrid に代入
+    let currentGrid = initGrid.map(row => [...row]);
 
     for (const line of lines) { // すべての行を処理
       const [direction, index] = line.split(' ');
       const idx = parseInt(index, 10);
 
-      const newGrid = [...currentGrid];
+      const newGrid = currentGrid.map(row => [...row]); // 現在の盤面をコピー
 
       if (direction === 'U' || direction === 'D') {
         setHighlightedCol(idx); // スライド中の列をハイライト
@@ -98,6 +215,7 @@ function App() {
         }
       }
 
+      currentGrid = newGrid; // 現在の盤面を更新
       setGrid(newGrid); // グリッドを更新
       setMoveCount((prev) => prev + 1); // 操作回数をカウント
       await new Promise((resolve) => setTimeout(resolve, 100)); // スライド操作を待機
