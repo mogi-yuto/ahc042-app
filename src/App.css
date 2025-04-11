@@ -1,0 +1,213 @@
+.score-display {
+    position: relative;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 0;
+    display: inline-block; /* スコアと操作回数を横並びにする */
+    width: 150px; /* 4桁分の幅を確保 */
+    text-align: left; /* 数字を右揃え */
+}
+
+.operation-count {
+    position: relative;
+    top: 10px;
+    left: 10px; /* スコアの右に配置 */
+    font-size: 18px;
+    font-weight: normal;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 8px;
+    border-radius: 5px;
+    z-index: 0;
+    display: inline-block; /* 横並びにする */
+    margin-left: 0px; /* スコアとの間隔を調整 */
+    margin-right: 80px; /* リセットボタンとの間隔をさらに広げる */
+    width: 140px; /* 4桁分の幅を確保 */
+    text-align: left; /* 数字を右揃え */
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(20, 25px); /* 20マスに変更 */
+    grid-template-rows: repeat(20, 25px); /* 20マスに変更 */
+    gap: 2px;
+    margin: 20px 50px;
+  }
+  
+  .grid-cell {
+    width: 25px;
+    height: 25px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    position: relative; /* 子要素の位置を基準にする */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .grid-cell.selected {
+    background-color: #d3f9d8;
+  }
+
+  .grid-cell.highlighted {
+    background-color: #e6ffe6; /* 薄い緑色 */
+  }
+
+  .grid-cell.highlighted-slide {
+    background-color: rgba(144, 238, 144, 0.5); /* 薄い緑色 */
+  }
+  
+  .grid-image {
+    width: 20px; /* 画像のサイズを調整 */
+    height: 20px;
+    object-fit: contain; /* 画像をマス内に収める */
+    z-index: 0; /* オーバーレイ (.overlay) の下に表示 */
+    position: absolute;
+  }
+  
+  .arrows {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .arrow-button {
+    position: absolute;
+    width: 20px; /* 1マスより少し小さい */
+    height: 20px;
+    background-color: rgba(128, 186, 74, 0.75); /* 半透明 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    z-index: 10; /* ボタンをマスの上に表示 */
+    transition: background-color 0.3s ease; /* ホバー時のアニメーション */
+  }
+  
+  .arrow-button:hover {
+    background-color: rgba(90, 140, 54, 0.75); /* 半透明の濃い色 */
+  }
+  
+  .arrow-button.up {
+    top: -25px; /* 上に配置 */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .arrow-button.down {
+    bottom: -25px; /* 下に配置 */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .arrow-button.left {
+    left: -25px; /* 左に配置 */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .arrow-button.right {
+    right: -25px; /* 右に配置 */
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+.cancel-button {
+    position: absolute;
+    top: 2.5px; /* 上に配置 */
+    right: 2.5px; /* 右に配置 */
+    width: 20px;
+    height: 20px;
+    background-color: rgba(200, 200, 200, 0.75); /* 薄い灰色 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    z-index: 10; /* ボタンをマスの上に表示 */
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: rgba(150, 150, 150, 0.75); /* 濃い灰色 */
+}
+
+.reset-button {
+    margin: 20px 0 0 0; /* 上: 20pxに配置 */
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: inline-block; /* 横並びにする */
+    vertical-align: top; /* 操作回数と高さを揃える */
+    z-index: 3; /* .overlay より上に表示 */
+}
+
+.reset-button:hover {
+    background-color: #0056b3;
+}
+
+.cpu-button {
+  margin: 20px 0 0 0; /* 上: 20pxに配置 */
+  padding: 10px 20px;
+  background-color: #90ee90; /* 黄緑色 */
+  border: none;
+  margin-right: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block; /* 横並びにする */
+  vertical-align: top; /* 操作回数と高さを揃える */
+  border-radius: 5px;
+}
+
+.cpu-button:hover {
+  background-color: #76c776;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* 黒の透明度30% */
+  z-index: 1; /* スコア画面やリセットボタンより下に表示 */
+  display: block; /* スコア画面時に表示 */
+}
+
+.score-screen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 2; /* .overlay より上に表示 */
+  text-align: center;
+}
+
+.score-content {
+  font-size: 18px;
+}
